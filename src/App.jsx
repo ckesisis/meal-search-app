@@ -204,19 +204,19 @@ const MealSearchAdvanced = () => {
 		return lemmatizedTokens
 	}
 
-	const generateSearchVariants = (tokens) => {
-		if (tokens.length <= 1) return [tokens.join(' ')]
-		const permutations = []
-		const permute = (arr, m = []) => {
-			if (arr.length === 0) permutations.push(m.join(' '))
-			for (let i = 0; i < arr.length; i++) {
-				let curr = arr.slice()
-				let next = curr.splice(i, 1)
-				permute(curr.slice(), m.concat(next))
-			}
+	function generateSearchVariants(tokens) {
+		const variants = []
+
+		variants.push(tokens.join(' '))
+		if (tokens.length > 1) {
+			variants.push(tokens.slice().reverse().join(' '))
 		}
-		permute(tokens)
-		return permutations
+
+		tokens.forEach((token) => {
+			variants.push(token)
+		})
+
+		return [...new Set(variants)]
 	}
 
 	const searchMeals = async () => {
